@@ -1,0 +1,101 @@
+{
+  "name": "time-timer",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": ".",
+  "main": "./build/main.js",
+  "scripts": {
+    "dev": "next dev",
+    "build:clean": "rm -rf ./build",
+    "build:renderer": "next build",
+    "build": "run-s build:clean build:renderer build:main",
+    "start": "next start",
+    "lint": "next lint",
+    "build:main": "tsc --build ./electron",
+    "run:main": "cross-env NODE_ENV=development electron .",
+    "start:main": "run-s build:main run:main",
+    "package": "pnpm build && electron-builder -mw --publish never",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "electron-debug": "^4.0.0",
+    "electron-is-dev": "^3.0.1",
+    "electron-log": "^5.1.5",
+    "electron-progressbar": "^2.2.1",
+    "electron-updater": "^6.1.8",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "regenerator-runtime": "^0.14.1",
+    "source-map-support": "^0.5.21"
+  },
+  "devDependencies": {
+    "@types/electron-progressbar": "^1.2.6",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/regenerator-runtime": "^0.13.5",
+    "@types/source-map-support": "^0.5.10",
+    "cross-env": "^7.0.3",
+    "electron": "^30.0.9",
+    "electron-builder": "^24.13.3",
+    "electron-devtools-installer": "^3.2.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5"
+  },
+  "build": {
+    "productName": "time-timer",
+    "appId": "com.yuta.time-timer",
+    "files": [
+      "./build"
+    ],
+    "asar": true,
+    "asarUnpack": "**\\*.{node,dll}",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": {
+        "target": "default",
+        "arch": [
+          "arm64",
+          "x64"
+        ]
+      },
+      "type": "distribution",
+      "hardenedRuntime": true,
+      "entitlements": "electron/resources/entitlements.mac.plist",
+      "entitlementsInherit": "electron/resources/entitlements.mac.plist",
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/logo.png"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Development"
+    },
+    "directories": {
+      "buildResources": "./build",
+      "output": "./release"
+    }
+  }
+}
