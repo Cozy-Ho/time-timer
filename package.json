@@ -18,31 +18,32 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@rkdwn/ui": "^0.1.2",
     "electron-debug": "^4.0.0",
     "electron-is-dev": "^3.0.1",
     "electron-log": "^5.1.5",
     "electron-progressbar": "^2.2.1",
-    "electron-updater": "^6.1.8",
-    "next": "14.2.3",
-    "react": "^18",
-    "react-dom": "^18",
+    "electron-updater": "^6.2.1",
+    "next": "14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "regenerator-runtime": "^0.14.1",
     "source-map-support": "^0.5.21"
   },
   "devDependencies": {
     "@types/electron-progressbar": "^1.2.6",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "@types/regenerator-runtime": "^0.13.5",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/regenerator-runtime": "^0.13.6",
     "@types/source-map-support": "^0.5.10",
     "cross-env": "^7.0.3",
-    "electron": "^30.0.9",
+    "electron": "^31.2.1",
     "electron-builder": "^24.13.3",
     "electron-devtools-installer": "^3.2.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.3",
+    "eslint": "^9.7.0",
+    "eslint-config-next": "14.2.5",
     "npm-run-all": "^4.1.5",
-    "typescript": "^5"
+    "typescript": "^5.5.3"
   },
   "build": {
     "productName": "time-timer",
