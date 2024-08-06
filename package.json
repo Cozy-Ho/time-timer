@@ -2,7 +2,7 @@
   "name": "time-timer",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "./",
   "main": "./build/main.js",
   "scripts": {
     "dev": "next dev",
@@ -14,7 +14,7 @@
     "build:main": "tsc --build ./electron",
     "run:main": "cross-env NODE_ENV=development electron .",
     "start:main": "run-s build:main run:main",
-    "package": "pnpm build && electron-builder -mw --publish never",
+    "package": "pnpm build && electron-builder -m --publish never",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
@@ -23,6 +23,7 @@
     "electron-is-dev": "^3.0.1",
     "electron-log": "^5.1.5",
     "electron-progressbar": "^2.2.1",
+    "electron-serve": "^2.0.0",
     "electron-updater": "^6.2.1",
     "next": "14.2.5",
     "react": "^18.3.1",
@@ -49,7 +50,7 @@
     "productName": "time-timer",
     "appId": "com.yuta.time-timer",
     "files": [
-      "./build"
+      "build"
     ],
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
@@ -95,7 +96,7 @@
       "category": "Development"
     },
     "directories": {
-      "buildResources": "./build",
+      "buildResources": "build",
       "output": "./release"
     }
   }

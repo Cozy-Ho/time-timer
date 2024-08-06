@@ -3,7 +3,6 @@ import * as path from "path";
 import "regenerator-runtime";
 import MenuBuilder from "./menu";
 import { Log, resolveHtmlPath, Updater } from "./utils";
-// import * as debug from "electron-debug";
 import { ipcMainEvents } from "./events";
 import * as url from "url";
 
@@ -15,42 +14,6 @@ let mainWindow: BrowserWindow | undefined;
 ipcMainEvents.map(events => {
   console.log("event register");
   ipcMain.on(events.eventName, events.handler);
-});
-
-/**
- * 로그인 창 윈도우를 생성합니다.
- * mainWindow를 부모로 가집니다.
- */
-ipcMain.on("open-login", (event, args: string) => {
-  Log.debug("# open-login args : ", args);
-  const authBrowserWindow = new BrowserWindow({
-    width: 500,
-    height: 800,
-    modal: true,
-    autoHideMenuBar: true,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
-    },
-    parent: mainWindow
-  });
-
-  authBrowserWindow.loadURL(args);
-  authBrowserWindow.show();
-
-  authBrowserWindow.on("blur", () => {
-    authBrowserWindow.close();
-    event.reply("login-done", null);
-  });
-
-  authBrowserWindow.webContents.on("will-redirect", (_event, _url) => {
-    Log.debug("# _url : ", _url);
-    const urlObj = url.parse(_url, true);
-    if (urlObj.query && urlObj.query.code) {
-      event.reply("login-done", urlObj.query.code);
-      authBrowserWindow.close();
-    }
-  });
 });
 
 if (process.env.NODE_ENV === "production") {
@@ -65,18 +28,16 @@ const isDevelopment = process.env.NODE_ENV === "development" || process.env.DEBU
 const installExtensions = async () => {
   const installer = await import("electron-devtools-installer");
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions: string[] = ["REACT_DEVELOPER_TOOLS"];
+  const extensions: string[] = [];
 
   return installer.default(extensions, forceDownload).catch(e => {
-    // console.log("# : import installer error ", e);
+    console.log("# : import installer error ", e);
   });
 };
 
 const createWindow = async () => {
   if (isDevelopment) {
     await installExtensions();
-    // await installElectronDebug();
-    // debug.default();
   }
 
   const RESOURCES_PATH = path.join(__dirname, "./assets");
@@ -96,6 +57,13 @@ const createWindow = async () => {
     }
   });
 
+  // if (app.isPackaged) {
+  // const { default: serve } = await import("electron-serve");
+  // const appServe = serve({ directory: path.join(__dirname, ".") });
+  // await appServe(mainWindow);
+  // mainWindow.loadURL("app://-");
+  // }
+  console.log(app.getAppPath());
   mainWindow.loadURL(resolveHtmlPath("index.html"));
 
   mainWindow.on("ready-to-show", () => {
@@ -108,7 +76,7 @@ const createWindow = async () => {
       mainWindow.show();
     }
     // FIXME: Open Dev tools when packaged.
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
   });
 
   mainWindow.on("closed", () => {
